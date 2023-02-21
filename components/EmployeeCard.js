@@ -14,6 +14,7 @@ import {
 
 import styles from '../styles/components/EmployeeCard.module.css';
 import EditButton from './EditButton';
+import DeleteButton from './DeleteButton';
 
 const EmployeeCard = ({ employee }) => {
   const name = `${employee.first_name} ${employee.last_name}`;
@@ -30,23 +31,27 @@ const EmployeeCard = ({ employee }) => {
         <Grid container item md={12}>
           <List>
             <ListItem disablePadding>
-              <Typography variant="body2">{name}</Typography>
+              <Typography sx={{ fontSize: '0.75rem' }}>{name}</Typography>
             </ListItem>
             <ListItem disablePadding>
-              <Typography variant="body2">{employee.email}</Typography>
+              <Typography sx={{ fontSize: '0.75rem' }}>
+                {employee.email}
+              </Typography>
             </ListItem>
             <ListItem disablePadding>
-              <Typography variant="body2">{employee.number}</Typography>
+              <Typography sx={{ fontSize: '0.75rem' }}>
+                {employee.number}
+              </Typography>
             </ListItem>
             <ListItem disablePadding>
-              <Typography variant="body2">{gender}</Typography>
+              <Typography sx={{ fontSize: '0.75rem' }}>{gender}</Typography>
             </ListItem>
           </List>
         </Grid>
       </CardContent>
       <CardActions>
-        <Grid container item md={12} justifyContent="flex-end">
-          <Button size="small">Delete</Button>
+        <Grid container item md={12} spacing={2} justifyContent="flex-end">
+          <DeleteButton />
           <Link href={`/employee/edit/${employee.id}`} passHref>
             <EditButton />
           </Link>

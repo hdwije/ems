@@ -1,9 +1,13 @@
-import { Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+
+import styles from '../styles/components/Header.module.css'
 
 const Header = () => (
-  <Grid container item md={12}>
-    <div>Employee Manager</div>
-  </Grid>
+  <Box sx={{ flexGrow: 1 }}>
+    <Grid container item md={12} className={styles.mainHeader}>
+      <Typography variant="h6">Employee Manager</Typography>
+    </Grid>
+  </Box>
 );
 
 export default Header;
