@@ -1,0 +1,9 @@
+.viewButton {
+  background-color: #7d2acb;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.viewButton:hover {
+  background-color: #6422a1;
+}

@@ -6,10 +6,20 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Grid,
+  List,
+  ListItem,
   Typography,
 } from '@mui/material';
 
+import styles from '../styles/components/EmployeeCard.module.css';
+import EditButton from './EditButton';
+import DeleteButton from './DeleteButton';
+
 const EmployeeCard = ({ employee }) => {
+  const name = `${employee.first_name} ${employee.last_name}`;
+  const gender = employee.gender === 'M' ? 'Male' : 'Female';
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -18,19 +28,34 @@ const EmployeeCard = ({ employee }) => {
         title="green iguana"
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          Lizard
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
-        </Typography>
+        <Grid container item md={12}>
+          <List>
+            <ListItem disablePadding>
+              <Typography sx={{ fontSize: '0.75rem' }}>{name}</Typography>
+            </ListItem>
+            <ListItem disablePadding>
+              <Typography sx={{ fontSize: '0.75rem' }}>
+                {employee.email}
+              </Typography>
+            </ListItem>
+            <ListItem disablePadding>
+              <Typography sx={{ fontSize: '0.75rem' }}>
+                {employee.number}
+              </Typography>
+            </ListItem>
+            <ListItem disablePadding>
+              <Typography sx={{ fontSize: '0.75rem' }}>{gender}</Typography>
+            </ListItem>
+          </List>
+        </Grid>
       </CardContent>
       <CardActions>
-        <Link href={`/employee/edit/${employee.id}`} passHref>
-          <Button size="small">Edit</Button>
-        </Link>
-        <Button size="small">Delete</Button>
+        <Grid container item md={12} spacing={2} justifyContent="flex-end">
+          <DeleteButton />
+          <Link href={`/employee/edit/${employee.id}`} passHref>
+            <EditButton />
+          </Link>
+        </Grid>
       </CardActions>
     </Card>
   );
