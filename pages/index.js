@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { Inter } from '@next/font/google';
 import styles from '@/styles/Home.module.css';
+import Link from 'next/link';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,9 +18,9 @@ export default function Home() {
       <header>
         <nav>
           <img />
-          <a href="/employee/list">List</a>
-          <a href="/employee/add">Add</a>
-          <a href="/employee/edit/id">Edit</a>
+          <Link href="/employee/list">List</Link>
+          <Link href="/employee/add">Add</Link>
+          <Link href="/employee/edit/id">Edit</Link>
         </nav>
       </header>
       <main className={styles.main}></main>
