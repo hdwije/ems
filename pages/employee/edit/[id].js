@@ -1,3 +1,4 @@
+import React, { useRef, useState } from 'react';
 import {
   Button,
   FormControl,
@@ -7,15 +8,47 @@ import {
   TextField,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import { useRouter } from 'next/router';
 
 function Edit({ employee }) {
+  const [firstName, setFirstName] = useState(employee.first_name);
+  const router = useRouter();
+
+  const handleOnChange = async (event) => {
+    event.preventDefault();
+
+    const { id } = router?.query;
+
+    try {
+      const response = await fetch('/api/employee', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, firstName }),
+      });
+
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+      const data = await response.json();
+      console.log('POST', data);
+    } catch (error) {
+      console.log('ERROR', error);
+    }
+  };
+
   return (
-    <Box component="form" noValidate autoComplete="off">
+    <Box
+      component="form"
+      onSubmit={(event) => handleOnChange(event)}
+      noValidate
+      autoComplete="off"
+    >
       <TextField
         label="First Name"
         variant="outlined"
-        value={employee.first_name}
+        value={firstName}
+        onChange={(event) => setFirstName(event.target.value)}
       />
       <TextField
         label="Last Name"
@@ -37,7 +70,9 @@ function Edit({ employee }) {
           <MenuItem value="F">Female</MenuItem>
         </Select>
       </FormControl>
-      <Button size="small">Delete</Button>
+      <Button type="submit" size="small">
+        Save
+      </Button>
     </Box>
   );
 }
