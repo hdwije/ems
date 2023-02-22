@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Box, Grid } from '@mui/material';
 
 import styles from '../../styles/pages/List.module.css';
@@ -9,7 +10,7 @@ import GridView from '@/components/GridView';
 import TableView from '@/components/TableView';
 
 const List = ({ employees }) => {
-  const [view, setView] = useState('TABLE');
+  const [view, setView] = useState('GRID');
 
   const switchView = () => {
     if (view === 'GRID') setView('TABLE');
@@ -45,8 +46,8 @@ const List = ({ employees }) => {
 };
 
 export async function getServerSideProps() {
-  const response = await import('/data/employees.json');
-  const employees = await JSON.parse(JSON.stringify(response.default ?? []));
+  const response = await axios.get('http://localhost:3000/api/employee');
+  const employees = response.data;
 
   return {
     props: {

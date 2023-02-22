@@ -54,7 +54,6 @@ const TableView = ({ employees }) => {
     }
 
     if (columnId === 'image') {
-      console.log('value', value);
       return <Image width={50} height={50} src={value} alt={value} />;
     }
 
