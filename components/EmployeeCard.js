@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -12,12 +11,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import styles from '../styles/components/EmployeeCard.module.css';
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
 
 const EmployeeCard = ({ employee }) => {
-  const name = `${employee.first_name} ${employee.last_name}`;
+  const name = `${employee.firstName} ${employee.lastName}`;
   const gender = employee.gender === 'M' ? 'Male' : 'Female';
 
   return (
