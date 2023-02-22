@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
 import {
   Box,
-  Button,
   FormControl,
   Grid,
   InputLabel,
@@ -9,13 +10,62 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import Link from 'next/link';
 
 import styles from '../../styles/pages/Add.module.css';
 import HeaderButton from '@/components/HeaderButton';
 import PrimaryButton from '@/components/PrimaryButton';
+import { addEmployee } from '@/slices/employeeSlics';
 
-const add = () => {
+const Add = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [gender, setGender] = useState('M');
+  const [number, setNumber] = useState('');
+  const [email, setEmail] = useState('');
+
+  const dispatch = useDispatch();
+  const { employee, loading, error } = useSelector((state) => state.employee);
+
+  useEffect(() => {
+    console.log('added employee', employee);
+  }, [employee]);
+
+  const changeField = (event) => {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case 'firstName':
+        setFirstName(value);
+        break;
+
+      case 'lastName':
+        setLastName(value);
+        break;
+
+      case 'email':
+        setEmail(value);
+        break;
+
+      case 'number':
+        setNumber(value);
+        break;
+
+      case 'gender':
+        setGender(value);
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const add = () => {
+    console.log('adding');
+    dispatch(addEmployee({ firstName, lastName, email, gender, number }));
+  };
+
+  if (loading === 'pending') return <div>Loading...</div>;
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid
@@ -39,7 +89,13 @@ const add = () => {
               <InputLabel>First Name</InputLabel>
             </Grid>
             <Grid md={8} container item>
-              <TextField fullWidth variant="filled" value={''} />
+              <TextField
+                fullWidth
+                variant="filled"
+                name="firstName"
+                onChange={(event) => changeField(event)}
+                value={firstName}
+              />
             </Grid>
           </Grid>
           <Grid md={12} container item className={styles.fieldWrapper}>
@@ -47,7 +103,13 @@ const add = () => {
               <InputLabel>Last Name</InputLabel>
             </Grid>
             <Grid md={8} container item>
-              <TextField fullWidth variant="filled" value={''} />
+              <TextField
+                fullWidth
+                variant="filled"
+                name="lastName"
+                onChange={(event) => changeField(event)}
+                value={lastName}
+              />
             </Grid>
           </Grid>
           <Grid md={12} container item className={styles.fieldWrapper}>
@@ -55,7 +117,13 @@ const add = () => {
               <InputLabel>Email</InputLabel>
             </Grid>
             <Grid md={8} container item>
-              <TextField fullWidth variant="filled" value={''} />
+              <TextField
+                fullWidth
+                variant="filled"
+                name="email"
+                onChange={(event) => changeField(event)}
+                value={email}
+              />
             </Grid>
           </Grid>
           <Grid md={12} container item className={styles.fieldWrapper}>
@@ -63,7 +131,13 @@ const add = () => {
               <InputLabel>Phone</InputLabel>
             </Grid>
             <Grid md={8} container item>
-              <TextField fullWidth variant="filled" value={''} />
+              <TextField
+                fullWidth
+                variant="filled"
+                name="number"
+                onChange={(event) => changeField(event)}
+                value={number}
+              />
             </Grid>
           </Grid>
           <Grid md={12} container item className={styles.fieldWrapper}>
@@ -79,8 +153,9 @@ const add = () => {
                 <Select
                   labelId="demo-simple-select-standard-label"
                   id="demo-simple-select-standard"
-                  value={'M'}
-                  onChange={() => {}}
+                  value={gender}
+                  name="gender"
+                  onChange={(event) => changeField(event)}
                   label="Age"
                 >
                   <MenuItem value="M">Male</MenuItem>
@@ -90,7 +165,7 @@ const add = () => {
             </Grid>
           </Grid>
           <Grid md={12} item container justifyContent="flex-end">
-            <PrimaryButton label="Add" onClick={() => {}} />
+            <PrimaryButton label="Add" onClick={add} />
           </Grid>
         </Grid>
       </Grid>
@@ -98,4 +173,4 @@ const add = () => {
   );
 };
 
-export default add;
+export default Add;

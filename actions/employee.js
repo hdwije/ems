@@ -10,3 +10,18 @@ export const getAll = async () => {
     console.error('getAll ERROR: ', error);
   }
 };
+
+export const add = async (employee) => {
+  try {
+    const response = await axios.post(
+      'http://localhost:3000/api/employee',
+      employee,
+    );
+
+    const addEmployee = response.data ?? [];
+
+    return addEmployee;
+  } catch (error) {
+    console.error('add ERROR: ', error);
+  }
+};

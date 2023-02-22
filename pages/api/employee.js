@@ -1,6 +1,6 @@
 import dbConnect from '@/config/database';
-import regex from '@/config/regex';
 import Employee from '@/models/Employee';
+import { nameRegex, emailRegex, genderRegex, phoneRegex } from '@/config/regex';
 
 const handler = async (req, res) => {
   const { method, query, body } = req;
@@ -19,13 +19,16 @@ const handler = async (req, res) => {
 
     case 'POST':
       const { firstName, lastName, email, number, gender } = body;
-      const { nameRegex, emailRegex, genderRegex, phoneRegex } = regex;
 
       try {
         if (!firstName || !lastName || !email || !number || !gender) {
           return res.status(400).json({ message: 'All fields are required' });
         }
 
+        console.log('firstName', firstName);
+        console.log('typeof', typeof firstName);
+        console.log('nameRegex', nameRegex);
+        console.log('firstName.match(nameRegex)', nameRegex.test(`${firstName}`));
         if (!firstName.match(nameRegex)) {
           return res.status(400).json({ message: 'First name is invalid' });
         }

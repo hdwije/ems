@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { getAll } from '../actions/employee';
+import { add, getAll } from '../actions/employee';
 
 export const getAllEmployees = createAsyncThunk(
   'employee/getAllEmployeesStatus',
@@ -10,8 +10,17 @@ export const getAllEmployees = createAsyncThunk(
   },
 );
 
+export const addEmployee = createAsyncThunk(
+  'employee/addEmployeeStatus',
+  async (employeeData) => {
+    const employee = await add(employeeData);
+    return employee;
+  },
+);
+
 const initialState = {
   employees: [],
+  employee: undefined,
   loading: 'idle',
   currentRequestId: undefined,
   error: null,
@@ -42,6 +51,36 @@ export const employeeSlice = createSlice({
         }
       })
       .addCase(getAllEmployees.rejected, (state, action) => {
+        const { requestId } = action.meta;
+
+        if (
+          state.loading === 'pending' &&
+          state.currentRequestId === requestId
+        ) {
+          state.loading = 'idle';
+          state.error = action.error;
+          state.currentRequestId = undefined;
+        }
+      })
+      .addCase(addEmployee.pending, (state, action) => {
+        if (state.loading === 'idle') {
+          state.loading = 'pending';
+          state.currentRequestId = action.meta.requestId;
+        }
+      })
+      .addCase(addEmployee.fulfilled, (state, action) => {
+        const { requestId } = action.meta;
+
+        if (
+          state.loading === 'pending' &&
+          state.currentRequestId === requestId
+        ) {
+          state.loading = 'idle';
+          state.employee = action.payload;
+          state.currentRequestId = undefined;
+        }
+      })
+      .addCase(addEmployee.rejected, (state, action) => {
         const { requestId } = action.meta;
 
         if (

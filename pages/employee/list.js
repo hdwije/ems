@@ -15,7 +15,6 @@ const List = () => {
   const [view, setView] = useState('GRID');
 
   const dispatch = useDispatch();
-
   const { employees, loading, error } = useSelector((state) => state.employee);
 
   useEffect(() => {
