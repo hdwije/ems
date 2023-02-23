@@ -65,6 +65,7 @@ const List = () => {
   );
 };
 
+/*************** Check this */
 export async function getServerSideProps() {
   const response = await axios.get('http://localhost:3000/api/employee');
   const employees = response.data;

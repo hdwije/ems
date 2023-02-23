@@ -25,10 +25,6 @@ const handler = async (req, res) => {
           return res.status(400).json({ message: 'All fields are required' });
         }
 
-        console.log('firstName', firstName);
-        console.log('typeof', typeof firstName);
-        console.log('nameRegex', nameRegex);
-        console.log('firstName.match(nameRegex)', nameRegex.test(`${firstName}`));
         if (!firstName.match(nameRegex)) {
           return res.status(400).json({ message: 'First name is invalid' });
         }

@@ -7,7 +7,7 @@ export const getAll = async () => {
 
     return employees;
   } catch (error) {
-    console.error('getAll ERROR: ', error);
+    throw error;
   }
 };
 
@@ -22,6 +22,6 @@ export const add = async (employee) => {
 
     return addEmployee;
   } catch (error) {
-    console.error('add ERROR: ', error);
+    throw error;
   }
 };

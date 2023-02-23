@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import {
+  Alert,
   Box,
   FormControl,
   Grid,
@@ -22,13 +23,33 @@ const Add = () => {
   const [gender, setGender] = useState('M');
   const [number, setNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState(undefined);
+  const [successMessage, setSuccessMessage] = useState(undefined);
 
   const dispatch = useDispatch();
   const { employee, loading, error } = useSelector((state) => state.employee);
 
   useEffect(() => {
-    console.log('added employee', employee);
+    const name = `${employee?.firstName} ${employee?.lastName}`;
+    const message = `${name} is added successful`;
+
+    setSuccessMessage(message);
+    setErrorMessage('');
+    resetAddForm();
   }, [employee]);
+
+  useEffect(() => {
+    setErrorMessage(error?.message);
+    setSuccessMessage('');
+  }, [error]);
+
+  const resetAddForm = () => {
+    setFirstName('');
+    setLastName('');
+    setNumber('');
+    setEmail('');
+    setGender('M');
+  };
 
   const changeField = (event) => {
     const { name, value } = event.target;
@@ -60,8 +81,39 @@ const Add = () => {
   };
 
   const add = () => {
-    console.log('adding');
     dispatch(addEmployee({ firstName, lastName, email, gender, number }));
+  };
+
+  const renderSuccessAlert = () => {
+    if (!successMessage) return null;
+
+    return (
+      <Grid
+        md={12}
+        item
+        container
+        justifyContent="center"
+        className={styles.alert}
+      >
+        <Alert severity="success">{successMessage}</Alert>
+      </Grid>
+    );
+  };
+
+  const renderErrorAlert = () => {
+    if (!errorMessage) return null;
+
+    return (
+      <Grid
+        md={12}
+        item
+        container
+        justifyContent="center"
+        className={styles.alert}
+      >
+        <Alert severity="error">{errorMessage}</Alert>
+      </Grid>
+    );
   };
 
   if (loading === 'pending') return <div>Loading...</div>;
@@ -82,6 +134,8 @@ const Add = () => {
           </Link>
         </Grid>
       </Grid>
+      {renderSuccessAlert()}
+      {renderErrorAlert()}
       <Grid md={12} item container justifyContent="center">
         <Grid md={4} container item>
           <Grid md={12} container item className={styles.fieldWrapper}>
