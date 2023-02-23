@@ -12,7 +12,7 @@ import {
   TextField,
 } from '@mui/material';
 
-import styles from '../../styles/pages/Add.module.css';
+import styles from '../../styles/pages/Form.module.css';
 import HeaderButton from '@/components/HeaderButton';
 import PrimaryButton from '@/components/PrimaryButton';
 import { addEmployee } from '@/slices/employeeSlics';

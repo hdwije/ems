@@ -19,7 +19,7 @@ const EmployeeCard = ({ employee }) => {
   const gender = employee.gender === 'M' ? 'Male' : 'Female';
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 400 }}>
       <CardMedia
         sx={{ height: 140 }}
         image={employee.photo}
@@ -50,7 +50,7 @@ const EmployeeCard = ({ employee }) => {
       <CardActions>
         <Grid container item md={12} spacing={2} justifyContent="flex-end">
           <DeleteButton />
-          <Link href={`/employee/edit/${employee.id}`} passHref>
+          <Link href={`/employee/edit/${employee._id}`} passHref>
             <EditButton />
           </Link>
         </Grid>

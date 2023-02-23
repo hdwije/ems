@@ -26,11 +26,11 @@ export const add = async (employee) => {
   }
 };
 
-export const update = async (employee) => {
+export const edit = async (employeeId, data) => {
   try {
     const response = await axios.put(
-      `http://localhost:3000/api/employee/${employee.id}`,
-      employee,
+      `http://localhost:3000/api/employee/${employeeId}`,
+      data,
     );
 
     const updatedEmployee = response.data ?? [];

@@ -1,6 +1,6 @@
 import dbConnect from '@/config/database';
-import Employee from '@/models/Employee';
 import { getValidateMessage } from '@/helper/employee';
+import Employee from '@/models/Employee';
 
 const handler = async (req, res) => {
   const { method, query, body } = req;
@@ -8,17 +8,17 @@ const handler = async (req, res) => {
   await dbConnect();
 
   switch (method) {
-    case 'GET':
+    case 'PUT':
+      console.log('method', method);
+      console.log('query', query);
+      console.log('body', body);
       try {
-        const employees = await Employee.find({});
-        res.status(200).json(employees);
-      } catch (error) {
-        res.status(400).json({ message: error.message });
-      }
-      break;
+        const { id } = query;
 
-    case 'POST':
-      try {
+        if (!id) {
+          return res.status(400).json({ message: 'Employee id is required' });
+        }
+
         const errorMessage = getValidateMessage(body);
 
         if (errorMessage) {
@@ -27,15 +27,21 @@ const handler = async (req, res) => {
 
         const { firstName, lastName, email, number, gender } = body;
 
-        const employee = await Employee.create({
+        const updatedEmployee = await Employee.findByIdAndUpdate(id, {
           firstName,
           lastName,
           email,
-          gender,
           number,
-        });
+          gender,
+        })
+          .lean()
+          .exec();
 
-        res.status(200).json(employee);
+        if (!updatedEmployee) {
+          return res.status(400).json({ message: 'Employee is not exists' });
+        }
+
+        res.status(200).json(updatedEmployee);
       } catch (error) {
         res.status(400).json({ message: error.message });
       }

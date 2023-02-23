@@ -10,6 +10,7 @@ import ViewButton from '@/components/ViewButton';
 import GridView from '@/components/GridView';
 import TableView from '@/components/TableView';
 import { getAllEmployees } from '@/slices/employeeSlics';
+import { getAll } from '@/actions/employee';
 
 const List = () => {
   const [view, setView] = useState('GRID');
@@ -65,10 +66,10 @@ const List = () => {
   );
 };
 
-/*************** Check this */
 export async function getServerSideProps() {
-  const response = await axios.get('http://localhost:3000/api/employee');
-  const employees = response.data;
+  // const response = await axios.get('http://localhost:3000/api/employee');
+  const response = await getAll();
+  const employees = response.data ?? [];
 
   return {
     props: {
