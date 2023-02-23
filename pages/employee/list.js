@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 import { Box, Grid } from '@mui/material';
 import Link from 'next/link';
 
@@ -9,11 +8,15 @@ import HeaderButton from '@/components/HeaderButton';
 import ViewButton from '@/components/ViewButton';
 import GridView from '@/components/GridView';
 import TableView from '@/components/TableView';
-import { getAllEmployees } from '@/slices/employeeSlics';
+import { getAllEmployees, deleteEmployee } from '@/slices/employeeSlics';
 import { getAll } from '@/actions/employee';
+import ConfirmDialog from '@/components/ConfirmDialog';
 
 const List = () => {
   const [view, setView] = useState('GRID');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [name, setName] = useState('');
+  const [deleteEmployeeId, setDeleteEmployeeId] = useState(undefined);
 
   const dispatch = useDispatch();
   const { employees, loading, error } = useSelector((state) => state.employee);
@@ -22,15 +25,37 @@ const List = () => {
     dispatch(getAllEmployees());
   }, [dispatch]);
 
+  useEffect(() => {
+    setName('');
+    setDeleteEmployeeId(undefined);
+    setOpenDialog(false);
+  }, [employees]);
+
+  const openDeleteDialog = (name, employeeId) => {
+    setName(name);
+    setDeleteEmployeeId(employeeId);
+    setOpenDialog(true);
+  };
+
+  const closeDeleteDialog = (name) => {
+    setOpenDialog(false);
+  };
+
   const switchView = () => {
     if (view === 'GRID') setView('TABLE');
     else setView('GRID');
   };
 
+  const removeEmployee = () => {
+    dispatch(deleteEmployee(deleteEmployeeId));
+  };
+
   const renderView = () => {
     switch (view) {
       case 'GRID':
-        return <GridView employees={employees} />;
+        return (
+          <GridView employees={employees} openDeleteDialog={openDeleteDialog} />
+        );
 
       case 'TABLE':
         return <TableView employees={employees} />;
@@ -62,6 +87,12 @@ const List = () => {
         </Grid>
       </Grid>
       {renderView()}
+      <ConfirmDialog
+        open={openDialog}
+        name={name}
+        handleClose={closeDeleteDialog}
+        handleConfirm={removeEmployee}
+      />
     </Box>
   );
 };

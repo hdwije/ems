@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Alert,
   Box,
   FormControl,
+  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
@@ -18,13 +18,23 @@ import HeaderButton from '@/components/HeaderButton';
 import PrimaryButton from '@/components/PrimaryButton';
 import { getAll } from '@/actions/employee';
 import { editEmployee } from '@/slices/employeeSlics';
+import {
+  validateEmail,
+  validateFirstName,
+  validateLastName,
+  validateNumber,
+} from '@/helper/employee';
 
 const Edit = ({ currentEmployee }) => {
   const [firstName, setFirstName] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
   const [lastName, setLastName] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
   const [gender, setGender] = useState('M');
   const [number, setNumber] = useState('');
+  const [numberError, setNumberError] = useState('');
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [errorMessage, setErrorMessage] = useState(undefined);
   const [successMessage, setSuccessMessage] = useState(undefined);
 
@@ -81,20 +91,45 @@ const Edit = ({ currentEmployee }) => {
     }
   };
 
+  const resetErrors = () => {
+    setFirstNameError('');
+    setLastNameError('');
+    setEmailError('');
+    setNumberError('');
+  };
+
   const edit = () => {
-    console.log('edit button');
-    dispatch(
-      editEmployee({
-        employeeId: currentEmployee?._id,
-        data: {
-          firstName,
-          lastName,
-          email,
-          gender,
-          number,
-        },
-      }),
-    );
+    const firstNameValdation = validateFirstName(firstName);
+    const lastNameValdation = validateLastName(lastName);
+    const emailValdation = validateEmail(email);
+    const numberValdation = validateNumber(number);
+
+    if (
+      !firstNameValdation &&
+      !lastNameValdation &&
+      !emailValdation &&
+      !numberValdation
+    ) {
+      dispatch(
+        editEmployee({
+          employeeId: currentEmployee?._id,
+          data: {
+            firstName,
+            lastName,
+            email,
+            gender,
+            number,
+          },
+        }),
+      );
+
+      resetErrors();
+    } else {
+      setFirstNameError(firstNameValdation);
+      setLastNameError(lastNameValdation);
+      setEmailError(emailValdation);
+      setNumberError(numberValdation);
+    }
   };
 
   const renderSuccessAlert = () => {
@@ -157,6 +192,8 @@ const Edit = ({ currentEmployee }) => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                error={firstNameError ? true : false}
+                helperText={firstNameError}
                 fullWidth
                 variant="filled"
                 name="firstName"
@@ -171,6 +208,8 @@ const Edit = ({ currentEmployee }) => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                error={lastNameError ? true : false}
+                helperText={lastNameError}
                 fullWidth
                 variant="filled"
                 name="lastName"
@@ -185,6 +224,8 @@ const Edit = ({ currentEmployee }) => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                error={emailError ? true : false}
+                helperText={emailError}
                 fullWidth
                 variant="filled"
                 name="email"
@@ -199,6 +240,8 @@ const Edit = ({ currentEmployee }) => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                error={numberError ? true : false}
+                helperText={numberError}
                 fullWidth
                 variant="filled"
                 name="number"

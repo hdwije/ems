@@ -26,6 +26,7 @@ const handler = async (req, res) => {
         }
 
         const { firstName, lastName, email, number, gender } = body;
+        const randomNum = Math.floor(Math.random() * 100);
 
         const employee = await Employee.create({
           firstName,
@@ -33,6 +34,7 @@ const handler = async (req, res) => {
           email,
           gender,
           number,
+          photo: `https://randomuser.me/api/portraits/men/${randomNum}.jpg`,
         });
 
         res.status(200).json(employee);

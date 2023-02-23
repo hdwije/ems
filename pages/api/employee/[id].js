@@ -9,9 +9,6 @@ const handler = async (req, res) => {
 
   switch (method) {
     case 'PUT':
-      console.log('method', method);
-      console.log('query', query);
-      console.log('body', body);
       try {
         const { id } = query;
 
@@ -42,6 +39,23 @@ const handler = async (req, res) => {
         }
 
         res.status(200).json(updatedEmployee);
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+      }
+      break;
+
+    case 'DELETE':
+      try {
+        const { id } = query;
+
+        if (!id) {
+          return res.status(400).json({ message: 'Employee id is required' });
+        }
+
+        const deletedEmployee = await Employee.deleteOne({ _id: id });
+        const employees = await Employee.find({});
+
+        res.status(200).json({ employees, deletedEmployee });
       } catch (error) {
         res.status(400).json({ message: error.message });
       }

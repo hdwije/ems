@@ -35,3 +35,35 @@ export const getValidateMessage = ({
 
   return message;
 };
+
+export const validateFirstName = (firstName) => {
+  if (!firstName.match(nameRegex)) {
+    return 'First name is invalid';
+  }
+
+  return null;
+};
+
+export const validateLastName = (lastName) => {
+  if (!lastName.match(nameRegex)) {
+    return 'Last name is invalid';
+  }
+
+  return null;
+};
+
+export const validateEmail = (email) => {
+  if (!email.match(emailRegex)) {
+    return 'Email is invalid';
+  }
+
+  return null;
+};
+
+export const validateNumber = (number) => {
+  if (!number.match(phoneRegex)) {
+    return 'Phone number is invalid';
+  }
+
+  return null;
+};
