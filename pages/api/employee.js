@@ -1,6 +1,7 @@
 import dbConnect from '@/config/database';
 import Employee from '@/models/Employee';
 import { nameRegex, emailRegex, genderRegex, phoneRegex } from '@/config/regex';
+import { getValidateMessage } from '@/helper/employee';
 
 const handler = async (req, res) => {
   const { method, query, body } = req;
@@ -18,32 +19,14 @@ const handler = async (req, res) => {
       break;
 
     case 'POST':
-      const { firstName, lastName, email, number, gender } = body;
-
       try {
-        if (!firstName || !lastName || !email || !number || !gender) {
-          return res.status(400).json({ message: 'All fields are required' });
+        const errorMessage = getValidateMessage(body);
+
+        if (errorMessage) {
+          return res.status(400).json({ message: errorMessage });
         }
 
-        if (!firstName.match(nameRegex)) {
-          return res.status(400).json({ message: 'First name is invalid' });
-        }
-
-        if (!lastName.match(nameRegex)) {
-          return res.status(400).json({ message: 'Last name is invalid' });
-        }
-
-        if (!email.match(emailRegex)) {
-          return res.status(400).json({ message: 'Email is invalid' });
-        }
-
-        if (!number.match(phoneRegex)) {
-          return res.status(400).json({ message: 'Phone number is invalid' });
-        }
-
-        if (!gender.match(genderRegex)) {
-          return res.status(400).json({ message: 'Gender is invalid' });
-        }
+        const { firstName, lastName, email, number, gender } = body;
 
         const employee = await Employee.create({
           firstName,
@@ -54,6 +37,42 @@ const handler = async (req, res) => {
         });
 
         res.status(200).json(employee);
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+      }
+      break;
+
+    case 'PUT':
+      try {
+        const { empId } = query;
+
+        if (!empId) {
+          return res.status(400).json({ message: 'Employee id is required' });
+        }
+
+        const errorMessage = getValidateMessage(body);
+
+        if (errorMessage) {
+          return res.status(400).json({ message: errorMessage });
+        }
+
+        const { firstName, lastName, email, number, gender } = body;
+
+        const updatedEmployee = await Employee.findByIdAndUpdate(empId, {
+          firstName,
+          lastName,
+          email,
+          number,
+          gender,
+        })
+          .lean()
+          .exec();
+
+        if (!updatedEmployee) {
+          return res.status(400).json({ message: 'Employee is not exists' });
+        }
+
+        res.status(200).json(updatedEmployee);
       } catch (error) {
         res.status(400).json({ message: error.message });
       }
