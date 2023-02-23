@@ -7,6 +7,21 @@ export const getAll = async () => {
 
     return employees;
   } catch (error) {
-    console.error('getAll ERROR: ', error);
+    throw error;
+  }
+};
+
+export const add = async (employee) => {
+  try {
+    const response = await axios.post(
+      'http://localhost:3000/api/employee',
+      employee,
+    );
+
+    const addEmployee = response.data ?? [];
+
+    return addEmployee;
+  } catch (error) {
+    throw error;
   }
 };

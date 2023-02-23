@@ -16,6 +16,7 @@ const dbConnect = async () => {
   }
 
   if (!cached.promise) {
+    mongoose.set('strictQuery', false);
     cached.promise = await mongoose.connect(mongoUri);
   }
 
