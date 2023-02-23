@@ -4,9 +4,14 @@ import { Delete } from '@mui/icons-material';
 
 import styles from '../styles/components/DeleteButton.module.css';
 
-const DeleteButton = () => {
+const DeleteButton = ({ name, id, onClick }) => {
   return (
-    <IconButton className={styles.deleteButton} aria-label="delete" size="medium">
+    <IconButton
+      className={styles.deleteButton}
+      aria-label="delete"
+      size="medium"
+      onClick={() => onClick(name, id)}
+    >
       <Delete fontSize="inherit" />
     </IconButton>
   );

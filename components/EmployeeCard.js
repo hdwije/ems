@@ -14,7 +14,7 @@ import {
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
 
-const EmployeeCard = ({ employee }) => {
+const EmployeeCard = ({ employee, openDeleteDialog }) => {
   const name = `${employee.firstName} ${employee.lastName}`;
   const gender = employee.gender === 'M' ? 'Male' : 'Female';
 
@@ -49,7 +49,7 @@ const EmployeeCard = ({ employee }) => {
       </CardContent>
       <CardActions>
         <Grid container item md={12} spacing={2} justifyContent="flex-end">
-          <DeleteButton />
+          <DeleteButton name={name} id={employee._id} onClick={openDeleteDialog} />
           <Link href={`/employee/edit/${employee._id}`} passHref>
             <EditButton />
           </Link>

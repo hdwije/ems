@@ -40,3 +40,17 @@ export const edit = async (employeeId, data) => {
     throw error;
   }
 };
+
+export const remove = async (employeeId) => {
+  try {
+    const response = await axios.delete(
+      `http://localhost:3000/api/employee/${employeeId}`
+    );
+
+    const deletedEmployee = response.data ?? [];
+
+    return deletedEmployee;
+  } catch (error) {
+    throw error;
+  }
+};
