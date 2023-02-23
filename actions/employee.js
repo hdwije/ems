@@ -18,9 +18,24 @@ export const add = async (employee) => {
       employee,
     );
 
-    const addEmployee = response.data ?? [];
+    const addedEmployee = response.data ?? [];
 
-    return addEmployee;
+    return addedEmployee;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const update = async (employee) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:3000/api/employee/${employee.id}`,
+      employee,
+    );
+
+    const updatedEmployee = response.data ?? [];
+
+    return updatedEmployee;
   } catch (error) {
     throw error;
   }
