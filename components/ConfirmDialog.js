@@ -1,3 +1,5 @@
+import React, { useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Button,
   Dialog,
@@ -6,9 +8,19 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import React from 'react';
 
-const ConfirmDialog = ({ open, name, handleClose, handleConfirm }) => {
+import DeleteContext from '@/contexts/DeleteContext';
+import { deleteEmployee } from '@/slices/employeeSlics';
+
+const ConfirmDialog = ({ open, handleClose }) => {
+  const dispatch = useDispatch();
+  const value = useContext(DeleteContext);
+  const { name, deleteEmployeeId } = value;
+
+  const onDeleteClick = () => {
+    dispatch(deleteEmployee(deleteEmployeeId));
+  };
+
   return (
     <Dialog
       open={open}
@@ -26,7 +38,7 @@ const ConfirmDialog = ({ open, name, handleClose, handleConfirm }) => {
         <Button
           variant="contained"
           color="error"
-          onClick={() => handleConfirm()}
+          onClick={() => onDeleteClick()}
         >
           Delete
         </Button>

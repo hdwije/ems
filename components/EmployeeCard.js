@@ -49,7 +49,11 @@ const EmployeeCard = ({ employee, openDeleteDialog }) => {
       </CardContent>
       <CardActions>
         <Grid container item md={12} spacing={2} justifyContent="flex-end">
-          <DeleteButton name={name} id={employee._id} onClick={openDeleteDialog} />
+          <DeleteButton
+            name={name}
+            id={employee._id}
+            onClick={openDeleteDialog}
+          />
           <Link href={`/employee/edit/${employee._id}`} passHref>
             <EditButton />
           </Link>

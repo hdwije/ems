@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import {
   Grid,
   Paper,
@@ -13,7 +14,6 @@ import Image from 'next/image';
 
 import styles from '../styles/components/TableView.module.css';
 import DeleteButton from './DeleteButton';
-import Link from 'next/link';
 import EditButton from './EditButton';
 
 const columns = [
@@ -26,25 +26,25 @@ const columns = [
   { id: 'action', label: 'Action' },
 ];
 
-const TableView = ({ employees }) => {
+const TableView = ({ employees, openDeleteDialog }) => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
     const updatedRows = employees.map((employee) => ({
       image: employee.photo,
-      firstName: employee.first_name,
-      lastName: employee.last_name,
+      firstName: employee.firstName,
+      lastName: employee.lastName,
       email: employee.email,
       phone: employee.number,
       gender: employee.gender,
       action: employee.id,
-      id: employee.id,
+      id: employee._id,
     }));
 
     setRows(updatedRows);
   }, [employees]);
 
-  const renderTableCell = (columnId, value) => {
+  const renderTableCell = (columnId, value, row) => {
     if (columnId === 'gender') {
       if (value === 'M') {
         return 'Male';
@@ -58,10 +58,12 @@ const TableView = ({ employees }) => {
     }
 
     if (columnId === 'action') {
+      const name = `${row.firstName} ${row.lastName}`;
+
       return (
         <Grid container item md={12} spacing={1}>
-          <DeleteButton />
-          <Link href={`/employee/edit/${value}`} passHref>
+          <DeleteButton name={name} id={row.id} onClick={openDeleteDialog} />
+          <Link href={`/employee/edit/${row.id}`} passHref>
             <EditButton />
           </Link>
         </Grid>
@@ -93,7 +95,7 @@ const TableView = ({ employees }) => {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id}>
-                          {renderTableCell(column.id, value)}
+                          {renderTableCell(column.id, value, row)}
                         </TableCell>
                       );
                     })}
