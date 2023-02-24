@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:unit": "playwright test tests/unit",
+    "test:integration": "playwright test tests/integration",
+    "test:e2e": "playwright test tests/e2e"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -23,5 +26,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.31.1"
   }
 }
