@@ -16,13 +16,23 @@ import styles from '../../styles/pages/Form.module.css';
 import HeaderButton from '@/components/HeaderButton';
 import PrimaryButton from '@/components/PrimaryButton';
 import { addEmployee } from '@/slices/employeeSlics';
+import {
+  validateEmail,
+  validateFirstName,
+  validateLastName,
+  validateNumber,
+} from '@/helper/employee';
 
 const Add = () => {
   const [firstName, setFirstName] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
   const [lastName, setLastName] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
   const [gender, setGender] = useState('M');
   const [number, setNumber] = useState('');
+  const [numberError, setNumberError] = useState('');
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [errorMessage, setErrorMessage] = useState(undefined);
   const [successMessage, setSuccessMessage] = useState(undefined);
 
@@ -81,7 +91,24 @@ const Add = () => {
   };
 
   const add = () => {
-    dispatch(addEmployee({ firstName, lastName, email, gender, number }));
+    const firstNameValdation = validateFirstName(firstName);
+    const lastNameValdation = validateLastName(lastName);
+    const emailValdation = validateEmail(email);
+    const numberValdation = validateNumber(number);
+
+    if (
+      !firstNameValdation &&
+      !lastNameValdation &&
+      !emailValdation &&
+      !numberValdation
+    ) {
+      dispatch(addEmployee({ firstName, lastName, email, gender, number }));
+    } else {
+      setFirstNameError(firstNameValdation);
+      setLastNameError(lastNameValdation);
+      setEmailError(emailValdation);
+      setNumberError(numberValdation);
+    }
   };
 
   const renderSuccessAlert = () => {
@@ -144,6 +171,8 @@ const Add = () => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                error={firstNameError ? true : false}
+                helperText={firstNameError}
                 fullWidth
                 variant="filled"
                 name="firstName"
@@ -158,6 +187,8 @@ const Add = () => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                error={lastNameError ? true : false}
+                helperText={lastNameError}
                 fullWidth
                 variant="filled"
                 name="lastName"
@@ -172,6 +203,8 @@ const Add = () => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                error={emailError ? true : false}
+                helperText={emailError}
                 fullWidth
                 variant="filled"
                 name="email"
@@ -186,6 +219,8 @@ const Add = () => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                error={numberError ? true : false}
+                helperText={numberError}
                 fullWidth
                 variant="filled"
                 name="number"
