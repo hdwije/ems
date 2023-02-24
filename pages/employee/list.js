@@ -8,9 +8,10 @@ import HeaderButton from '@/components/HeaderButton';
 import ViewButton from '@/components/ViewButton';
 import GridView from '@/components/GridView';
 import TableView from '@/components/TableView';
-import { getAllEmployees, deleteEmployee } from '@/slices/employeeSlics';
-import { getAll } from '@/actions/employee';
 import ConfirmDialog from '@/components/ConfirmDialog';
+import DeleteContext from '@/contexts/DeleteContext';
+import { getAllEmployees } from '@/slices/employeeSlics';
+import { getAll } from '@/actions/employee';
 
 const List = () => {
   const [view, setView] = useState('GRID');
@@ -37,17 +38,13 @@ const List = () => {
     setOpenDialog(true);
   };
 
-  const closeDeleteDialog = (name) => {
+  const closeDeleteDialog = () => {
     setOpenDialog(false);
   };
 
   const switchView = () => {
     if (view === 'GRID') setView('TABLE');
     else setView('GRID');
-  };
-
-  const removeEmployee = () => {
-    dispatch(deleteEmployee(deleteEmployeeId));
   };
 
   const renderView = () => {
@@ -58,7 +55,12 @@ const List = () => {
         );
 
       case 'TABLE':
-        return <TableView employees={employees} />;
+        return (
+          <TableView
+            employees={employees}
+            openDeleteDialog={openDeleteDialog}
+          />
+        );
 
       default:
         return null;
@@ -86,19 +88,22 @@ const List = () => {
           <ViewButton view={view} onClick={() => switchView()} />
         </Grid>
       </Grid>
-      {renderView()}
-      <ConfirmDialog
-        open={openDialog}
-        name={name}
-        handleClose={closeDeleteDialog}
-        handleConfirm={removeEmployee}
-      />
+      <DeleteContext.Provider
+        value={{
+          name,
+          setName,
+          deleteEmployeeId,
+          setDeleteEmployeeId,
+        }}
+      >
+        {renderView()}
+        <ConfirmDialog open={openDialog} handleClose={closeDeleteDialog} />
+      </DeleteContext.Provider>
     </Box>
   );
 };
 
 export async function getServerSideProps() {
-  // const response = await axios.get('http://localhost:3000/api/employee');
   const response = await getAll();
   const employees = response.data ?? [];
 
