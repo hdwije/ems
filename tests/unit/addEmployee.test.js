@@ -1,57 +1,102 @@
-import test, { expect } from '@playwright/test';
+import test from '@playwright/test';
+import { createRandomName } from '../helper/employee';
+import AddEmployeePage from '../pages/AddEmployeePage';
 
-test.beforeEach(async ({ page }) => {
-  await page.goto('http://localhost:3000/employee/add');
+test.beforeEach(async ({ page, baseURL }) => {
+  await page.goto(`${baseURL}/employee/add`);
 });
 
-test('First name with empty string', async ({ page }) => {
-  const addBtn = page.locator("//button[text()='Add']");
-  const firstName = page.locator("input[name='firstName']");
+test.describe('Test add employee page', async () => {
+  test.describe('Test first name', async () => {
+    test('First name with empty string', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateFirstName('');
+    });
 
-  firstName.fill('');
-  addBtn.click();
-  await page.waitForTimeout(1000);
+    test('First name with numbers', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateFirstName('1234');
+    });
 
-  expect(page.locator("//p[text()='First name is invalid']")).toHaveText(
-    'First name is invalid',
-  );
-});
+    test('First name with 3 letters', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateFirstName('abc');
+    });
 
-test('First name with numbers', async ({ page }) => {
-  const addBtn = page.locator("//button[text()='Add']");
-  const firstName = page.locator("input[name='firstName']");
+    test('First name with 11 letters', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateFirstName('abcdefghijk');
+    });
 
-  firstName.fill('1234');
-  addBtn.click();
-  await page.waitForTimeout(1000);
+    test('First name with 8 letters', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateFirstName('Hemantha');
+    });
+  });
 
-  expect(page.locator("//p[text()='First name is invalid']")).toHaveText(
-    'First name is invalid',
-  );
-});
+  test.describe('Test last name', async () => {
+    test('Last name with empty string', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateLastName('');
+    });
 
-test('First name with 3 letters', async ({ page }) => {
-  const addBtn = page.locator("//button[text()='Add']");
-  const firstName = page.locator("input[name='firstName']");
+    test('Last name with numbers', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateLastName('1234');
+    });
 
-  firstName.fill('abc');
-  addBtn.click();
-  await page.waitForTimeout(1000);
+    test('Last name with 3 letters', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateLastName('abc');
+    });
 
-  expect(page.locator("//p[text()='First name is invalid']")).toHaveText(
-    'First name is invalid',
-  );
-});
+    test('Last name with 11 letters', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateLastName('abcdefghijk');
+    });
 
-test('First name with 11 letters', async ({ page }) => {
-  const addBtn = page.locator("//button[text()='Add']");
-  const firstName = page.locator("input[name='firstName']");
+    test('Last name with 8 letters', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateLastName('Hemantha');
+    });
+  });
 
-  firstName.fill('abcdefghijk');
-  addBtn.click();
-  await page.waitForTimeout(1000);
+  test.describe('Test email', async () => {
+    test('Email with incorrect email', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateEmail('abc');
+    });
 
-  expect(page.locator("//p[text()='First name is invalid']")).toHaveText(
-    'First name is invalid',
-  );
+    test('Email with correct email', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateEmail('abc@abc.com');
+    });
+  });
+
+  test.describe('Test number', async () => {
+    test('Number with incorrect number', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateNumber('123');
+    });
+
+    test('Number with correct number', async ({ page }) => {
+      const addEmployeePage = new AddEmployeePage(page);
+      await addEmployeePage.validateNumber('1234567890');
+    });
+  });
+
+  test('Add male employee happy path', async ({ page }) => {
+    const addEmployeePage = new AddEmployeePage(page);
+    const firstName = createRandomName(7);
+    const lastName = createRandomName(8);
+    const email = `${firstName}@${lastName}.com`;
+    const number = Math.floor(Math.random() * 10 ** 10);
+
+    addEmployeePage.fillFormWithCorrectValues({
+      firstName,
+      lastName,
+      email,
+      number,
+    });
+  });
 });

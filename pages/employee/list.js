@@ -81,7 +81,11 @@ const List = () => {
       >
         <Grid item md={2}>
           <Link href={`/employee/add`} passHref className={styles.link}>
-            <HeaderButton label="Add Employee" onClick={() => {}} />
+            <HeaderButton
+              label="Add Employee"
+              onClick={() => {}}
+              id="add-employee-btn"
+            />
           </Link>
         </Grid>
         <Grid item md={1}>

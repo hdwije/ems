@@ -10,6 +10,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from '@mui/material';
 
 import styles from '../../styles/pages/Form.module.css';
@@ -122,7 +123,9 @@ const Add = () => {
         justifyContent="center"
         className={styles.alert}
       >
-        <Alert severity="success">{successMessage}</Alert>
+        <Alert severity="success" id="add-success-message">
+          {successMessage}
+        </Alert>
       </Grid>
     );
   };
@@ -138,7 +141,9 @@ const Add = () => {
         justifyContent="center"
         className={styles.alert}
       >
-        <Alert severity="error">{errorMessage}</Alert>
+        <Alert severity="error" id="add-error-message">
+          {errorMessage}
+        </Alert>
       </Grid>
     );
   };
@@ -161,9 +166,14 @@ const Add = () => {
           </Link>
         </Grid>
       </Grid>
-      {renderSuccessAlert()}
-      {renderErrorAlert()}
       <Grid md={12} item container justifyContent="center">
+        <Grid md={12} item container justifyContent="center">
+          <Typography variant="h5" id="add-employee-title">
+            Add Employee
+          </Typography>
+        </Grid>
+        {renderSuccessAlert()}
+        {renderErrorAlert()}
         <Grid md={4} container item>
           <Grid md={12} container item className={styles.fieldWrapper}>
             <Grid md={4} container item>
@@ -171,6 +181,7 @@ const Add = () => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                id="add-first-name-field"
                 error={firstNameError ? true : false}
                 helperText={firstNameError}
                 fullWidth
@@ -187,6 +198,7 @@ const Add = () => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                id="add-last-name-field"
                 error={lastNameError ? true : false}
                 helperText={lastNameError}
                 fullWidth
@@ -203,6 +215,7 @@ const Add = () => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                id="add-email-field"
                 error={emailError ? true : false}
                 helperText={emailError}
                 fullWidth
@@ -219,6 +232,7 @@ const Add = () => {
             </Grid>
             <Grid md={8} container item>
               <TextField
+                id="add-number-field"
                 error={numberError ? true : false}
                 helperText={numberError}
                 fullWidth
@@ -254,7 +268,7 @@ const Add = () => {
             </Grid>
           </Grid>
           <Grid md={12} item container justifyContent="flex-end">
-            <PrimaryButton label="Add" onClick={add} />
+            <PrimaryButton label="Add" onClick={add} id="add-btn" />
           </Grid>
         </Grid>
       </Grid>
