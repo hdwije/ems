@@ -1,8 +1,9 @@
 import axios from 'axios';
+import {employeeApiPath} from '@/config/settings';
 
 export const getAll = async () => {
   try {
-    const response = await axios.get('http://localhost:3000/api/employee');
+    const response = await axios.get(employeeApiPath);
     const employees = response.data ?? [];
 
     return employees;
@@ -14,7 +15,7 @@ export const getAll = async () => {
 export const add = async (employee) => {
   try {
     const response = await axios.post(
-      'http://localhost:3000/api/employee',
+      employeeApiPath,
       employee,
     );
 
@@ -29,7 +30,7 @@ export const add = async (employee) => {
 export const edit = async (employeeId, data) => {
   try {
     const response = await axios.put(
-      `http://localhost:3000/api/employee/${employeeId}`,
+      `${employeeApiPath}/${employeeId}`,
       data,
     );
 
@@ -44,7 +45,7 @@ export const edit = async (employeeId, data) => {
 export const remove = async (employeeId) => {
   try {
     const response = await axios.delete(
-      `http://localhost:3000/api/employee/${employeeId}`
+      `${employeeApiPath}/${employeeId}`
     );
 
     const deletedEmployee = response.data ?? [];
