@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { nameRegex } from '../config/regex';
+import { emailRegex, nameRegex, phoneRegex } from '../config/regex';
 
 class AddEmployeePage {
   page = undefined;
@@ -58,11 +58,60 @@ class AddEmployeePage {
 
     const errorHelper = await this.getErrorOfFirstName();
 
-    if (nameRegex.match(firstName)) {
+    if (firstName.match(nameRegex)) {
       expect(errorHelper).not.toBeVisible();
     } else {
       expect(errorHelper).toBeVisible();
     }
+  }
+
+  async validateLastName(lastName) {
+    await this.enterLastName(lastName);
+    await this.clickOnAdd();
+
+    const errorHelper = await this.getErrorOfLastName();
+
+    if (lastName.match(nameRegex)) {
+      expect(errorHelper).not.toBeVisible();
+    } else {
+      expect(errorHelper).toBeVisible();
+    }
+  }
+
+  async validateEmail(email) {
+    await this.enterEmail(email);
+    await this.clickOnAdd();
+
+    const errorHelper = await this.getErrorOfEmail();
+
+    if (email.match(emailRegex)) {
+      expect(errorHelper).not.toBeVisible();
+    } else {
+      expect(errorHelper).toBeVisible();
+    }
+  }
+
+  async validateNumber(number) {
+    await this.enterNumber(number);
+    await this.clickOnAdd();
+
+    const errorHelper = await this.getErrorOfNumber();
+
+    if (number.match(phoneRegex)) {
+      expect(errorHelper).not.toBeVisible();
+    } else {
+      expect(errorHelper).toBeVisible();
+    }
+  }
+
+  async fillFormWithCorrectValues({ firstName, lastName, email, number }) {
+    await this.page.waitForTimeout(2000);
+    await this.enterFirstName(firstName);
+    await this.enterLastName(lastName);
+    await this.enterEmail(email);
+    await this.enterNumber(number);
+    await this.clickOnAdd();
+    expect(await this.getSuceessMessage()).toBeVisible();
   }
 }
 
