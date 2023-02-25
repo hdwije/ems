@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-
-import { add, edit, getAll, remove } from '../actions/employee';
+import { add, edit, getAll, remove } from '@/actions/employee';
 
 export const getAllEmployees = createAsyncThunk(
   'employee/getAllEmployeesStatus',
