@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test:unit": "playwright test tests/unit",
-    "test:integration": "playwright test tests/integration",
-    "test:e2e": "playwright test tests/e2e"
+    "test:integration": "playwright test tests/integration"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
