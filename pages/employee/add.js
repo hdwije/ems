@@ -60,6 +60,10 @@ const Add = () => {
     setNumber('');
     setEmail('');
     setGender('M');
+    setFirstNameError('');
+    setLastNameError('');
+    setNumberError('');
+    setEmailError('');
   };
 
   const changeField = (event) => {
