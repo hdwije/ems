@@ -107,6 +107,8 @@ const List = () => {
   );
 };
 
+export const revalidate = 60;
+
 export async function getServerSideProps() {
   const response = await getAll();
   const employees = response.data ?? [];

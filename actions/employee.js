@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {employeeApiPath} from '@/config/settings';
+import { employeeApiPath } from '@/config/settings';
 
 export const getAll = async () => {
   try {
@@ -14,10 +14,7 @@ export const getAll = async () => {
 
 export const add = async (employee) => {
   try {
-    const response = await axios.post(
-      employeeApiPath,
-      employee,
-    );
+    const response = await axios.post(employeeApiPath, employee);
 
     const addedEmployee = response.data ?? [];
 
@@ -29,10 +26,7 @@ export const add = async (employee) => {
 
 export const edit = async (employeeId, data) => {
   try {
-    const response = await axios.put(
-      `${employeeApiPath}/${employeeId}`,
-      data,
-    );
+    const response = await axios.put(`${employeeApiPath}/${employeeId}`, data);
 
     const updatedEmployee = response.data ?? [];
 
@@ -44,9 +38,7 @@ export const edit = async (employeeId, data) => {
 
 export const remove = async (employeeId) => {
   try {
-    const response = await axios.delete(
-      `${employeeApiPath}/${employeeId}`
-    );
+    const response = await axios.delete(`${employeeApiPath}/${employeeId}`);
 
     const deletedEmployee = response.data ?? [];
 
