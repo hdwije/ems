@@ -20,3 +20,9 @@ If the base url changes to different url instead of "http://localhost:3000", ple
 To run the project use
   npm run dev
   in development environment
+
+For run unit tests use
+  npm run test:unit
+
+For run integration tests use
+  npm run test:integration
