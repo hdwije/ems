@@ -17,12 +17,18 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 Project is runs on Node JS 18 version
 Create .env file using .env.template
 If the base url changes to different url instead of "http://localhost:3000", please change it in config.json file as well
-To run the project use
-  npm run dev
-  in development environment
 
-For run unit tests use
-  npm run test:unit
+To run the project in development environment:
+```bash
+npm run dev
+```
 
-For run integration tests use
-  npm run test:integration
+For run unit tests use:
+```bash
+npm run test:unit
+```
+
+For run integration tests use:
+```bash
+npm run test:integration
+```
